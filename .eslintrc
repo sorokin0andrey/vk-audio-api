@@ -1,0 +1,29 @@
+{
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "exampleGlobalVariable": true
+  },
+  "extends": [
+    "eslint-config-airbnb-base",
+    "eslint-config-airbnb-base/rules/strict"
+  ],
+  "rules": {
+    "semi": ["error", "never"],
+    "no-underscore-dangle": "off",
+    "no-continue": "off",
+    "no-plusplus": "off",
+    "no-console": "off",
+    "max-len": ["warn", 120],
+    "comma-dangle": ["warn", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "never"
+    }],
+    "arrow-parens": ["error", "always"]
+  }
+}
