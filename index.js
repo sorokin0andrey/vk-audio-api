@@ -33,7 +33,14 @@ class VkAudioApi {
           const track = parseTrack(data[0])
           resolve(track)
         })
-        .catch(error => reject(error))
+        .catch(error => {
+          this.getTracks()
+            .then(() => reject({
+              code: 'skip_track',
+              message: 'Cannot load data from server'
+            }))
+            .catch(() => reject(error))
+        })
     })
   }
 
