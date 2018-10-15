@@ -140,29 +140,32 @@ const getRealLink = (t) => {
 
 const prepare = (data) => {
   try {
-    let res = iconv.decode(data, 'win1251')
-    let json_data = res.split('<!>')[5]
-    json_data = JSON.parse(json_data.slice(7))
+    const res = iconv.decode(data, 'win1251')
+    const jsonData = JSON.parse(res.split('<!>')[5].slice(7))
     return {
       error: false,
-      data: json_data
+      data: jsonData,
     }
   } catch (e) {
     return {
       error: true,
-      data: null
+      data: null,
     }
   }
 }
 
 const parseTrack = (item) => {
+  const hashItems = item[13].split(new RegExp('/|//'))
+  const hash = hashItems && hashItems[2] ? hashItems[2] : ''
   return {
-    'track_id': item[0],
-    'user_id': item[1],
-    'src': getRealLink(item[2]),
-    'title': item[3],
-    'author': item[4],
-    'cover': item[14].split(',')[0]
+    track_id: item[0],
+    user_id: item[1],
+    src: getRealLink(item[2]),
+    title: item[3],
+    subtitle: item[16],
+    hash,
+    author: item[4],
+    cover: item[14].split(',')[0]
   }
 }
 
