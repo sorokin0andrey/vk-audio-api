@@ -22,11 +22,12 @@ class VkAudioApi {
         code: 'invalid_data',
         message: 'Cannot load data from server'
       }
-      if (!data || !data.user_id || !data.track_id) reject(errorData)
+      if (!data || !data.user_id || !data.track_id || !data.hash) reject(errorData)
+      const hash = data.hash.split(new RegExp('/{1,}'))
       const postData = {
         act: 'reload_audio',
         al: '1',
-        ids: `${data.user_id}_${data.track_id}`
+        ids: `${data.user_id}_${data.track_id}_${hash[hash.length - 3]}_${hash[hash.length - 1]}`
       }
       audioApi(postData)
         .then(data => {
@@ -34,6 +35,7 @@ class VkAudioApi {
           resolve(track)
         })
         .catch(error => {
+          console.log(error)
           this.getTracks()
             .then(() => reject({
               code: 'skip_track',
@@ -155,17 +157,15 @@ const prepare = (data) => {
 }
 
 const parseTrack = (item) => {
-  const hashItems = item[13].split(new RegExp('/|//'))
-  const hash = hashItems && hashItems[2] ? hashItems[2] : ''
   return {
     track_id: item[0],
     user_id: item[1],
     src: getRealLink(item[2]),
     title: item[3],
     subtitle: item[16],
-    hash,
+    hash: item[13],
     author: item[4],
-    cover: item[14].split(',')[0]
+    cover: item[14].split(',')[0],
   }
 }
 
