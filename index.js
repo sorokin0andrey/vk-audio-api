@@ -166,6 +166,7 @@ const parseTrack = (item) => {
     hash: item[13],
     author: item[4],
     cover: item[14].split(',')[0],
+    duration: item[5],
   }
 }
 
